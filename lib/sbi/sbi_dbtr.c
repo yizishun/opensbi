@@ -551,8 +551,8 @@ int sbi_dbtr_read_trig(unsigned long smode,
 		return SBI_ERR_FAILED;
 
 	if (trig_idx_base >= hs->total_trigs ||
-	    trig_idx_base + trig_count >= hs->total_trigs)
-		return SBI_ERR_INVALID_PARAM;
+	    trig_idx_base + trig_count > hs->total_trigs)
+		return SBI_ERR_BAD_RANGE;
 
 	if (sbi_dbtr_shmem_disabled(hs))
 		return SBI_ERR_NO_SHMEM;
@@ -715,7 +715,7 @@ int sbi_dbtr_update_trig(unsigned long smode,
 
 	shmem_base = hart_shmem_base(hs);
 
-	if (trig_count >= hs->total_trigs)
+	if (trig_count > hs->total_trigs)
 		return SBI_ERR_BAD_RANGE;
 
 	for_each_trig_entry(shmem_base, trig_count, typeof(*entry), entry) {
